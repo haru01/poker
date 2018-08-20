@@ -11,26 +11,27 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
-public class CardsTest {
+public class HandTest {
 
     @DisplayName("スコアを使って役の強い順に並べかえできる")
     @Nested
     class getScoreAndSort {
         @Test
         void sortSandbox() {
-            Cards highCard = new Cards(highCard());
-            Cards onePair = new Cards(onePair());
-            Cards twoPair = new Cards(twoPair());
-            Cards threeCard = new Cards(threeCard());
-            Cards flush = new Cards(flush());
-            Cards fullHouse = new Cards(fullHouse());
+            Hand highCard = new Hand(highCard());
+            Hand onePair = new Hand(onePair());
+            Hand twoPair = new Hand(twoPair());
+            Hand threeCard = new Hand(threeCard());
+            Hand flush = new Hand(flush());
+            Hand fullHouse = new Hand(fullHouse());
+            List<Hand> cards = asList(twoPair, highCard, flush, onePair, threeCard, fullHouse);
 
-            // TODO 勝者決めを Gameなどどこかに配置し直す
-            List<Cards> cards = asList(twoPair, highCard, flush, onePair, threeCard, fullHouse);
-            List<Cards> strongOrder = cards.stream().sorted((c1, c2) -> {
+            // act
+            List<Hand> strongOrder = cards.stream().sorted((c1, c2) -> {
                 return c2.getScore() - c1.getScore();
-            }).collect(toList());
+            }).collect(toList()); // TODO 勝者決めを Gameなどどこかに配置し直す
 
+            // assert
             assertIterableEquals(asList(fullHouse, flush, threeCard, twoPair, onePair, highCard),
                     strongOrder);
         }
@@ -42,17 +43,16 @@ public class CardsTest {
         // TODO ストレートフラッシュ
 
         // TODO フォーカード
-
         @DisplayName("フルハウス")
         @Test
         void returnFullHousePair() {
-            assertEquals("フルハウス", new Cards(fullHouse()).getHandName());
+            assertEquals("フルハウス", new Hand(fullHouse()).getName());
         }
 
         @DisplayName("フラッシュ")
         @Test
         void returnFlush() {
-            assertEquals("フラッシュ", new Cards(flush()).getHandName());
+            assertEquals("フラッシュ", new Hand(flush()).getName());
         }
 
         // TODO ストレート
@@ -60,25 +60,25 @@ public class CardsTest {
         @DisplayName("スリーカード")
         @Test
         void returnThreeCard() {
-            assertEquals("スリーカード", new Cards(threeCard()).getHandName());
+            assertEquals("スリーカード", new Hand(threeCard()).getName());
         }
 
         @DisplayName("ツーペア")
         @Test
         void returnTwoPair() {
-            assertEquals("ツーペア", new Cards(twoPair()).getHandName());
+            assertEquals("ツーペア", new Hand(twoPair()).getName());
         }
 
         @DisplayName("ワンペア")
         @Test
         void returnOnePair() {
-            assertEquals("ワンペア", new Cards(onePair()).getHandName());
+            assertEquals("ワンペア", new Hand(onePair()).getName());
         }
 
         @DisplayName("ハイカード")
         @Test
         void returnHighCard() {
-            assertEquals("ハイカード", new Cards(highCard()).getHandName());
+            assertEquals("ハイカード", new Hand(highCard()).getName());
         }
     }
 

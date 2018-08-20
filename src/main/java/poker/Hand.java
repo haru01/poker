@@ -1,56 +1,58 @@
 package poker;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toList;
 
-// 手札
-public class Cards {
+// 役
+public class Hand {
     private final List<Card> cards;
 
-    public Cards(Card... cards) {
+    public Hand(Card... cards) {
         // 五枚チェック
         this.cards = Arrays.asList(cards);
     }
 
     // 役名
-    public String getHandName() {
-        return getHand().name;
+    public String getName() {
+        return getHand().getKey();
     }
 
+    // 役の強さを点数化。比較できるように
     public int getScore() {
-        return getHand().score;
+        return getHand().getValue();
     }
 
-    private Hand getHand() {
+    private AbstractMap.SimpleEntry<String, Integer> getHand() {
         // TODO ロイヤルストレートフラッシュ
         // TODO ストレートフラッシュ
         // TODO フォーカード
         if (isFullhouse()) {
-            return new Hand("フルハウス", 6000);
+            return new AbstractMap.SimpleEntry<>("フルハウス", 6000);
         }
 
         if (isFlush()) {
-            return new Hand("フラッシュ", 5000);
+            return new AbstractMap.SimpleEntry<>("フラッシュ", 5000);
         }
 
         // TODO ストレート
 
         if (hasOneSameNumber(3)) {
-            return new Hand("スリーカード", 3000);
+            return new AbstractMap.SimpleEntry<>("スリーカード", 3000);
         }
 
         if (isTwoPair()) {
-            return new Hand("ツーペア", 2000);
+            return new AbstractMap.SimpleEntry<>("ツーペア", 2000);
         }
 
         if (hasOneSameNumber(2)) {
-            return new Hand("ワンペア", 1000);
+            return new AbstractMap.SimpleEntry<>("ワンペア", 1000);
         }
         // TODO ハイカード、ワンペア...にも強さの順序あり
-        return new Hand("ハイカード", 0);
+        return new AbstractMap.SimpleEntry<>("ハイカード", 0);
     }
 
     private boolean isFlush() {
@@ -86,24 +88,6 @@ public class Cards {
                 .filter(e -> e.getValue().size() == size)
                 .collect(toList())
                 .size() == 1;
-    }
-
-    // 役
-    class Hand {
-        // 役の名前
-        private String name;
-        // 役の強さを点数化（勝者をきめられるように）
-        private int score;
-
-        private Hand(String name, int score) {
-            this.name = name;
-            this.score = score;
-        }
-
-        @Override
-        public String toString() {
-            return "handName:" + name + ", score:" + score;
-        }
     }
 
     @Override
