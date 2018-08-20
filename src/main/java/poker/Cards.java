@@ -25,13 +25,14 @@ public class Cards {
     }
 
     private Hand getHand() {
+        // TODO ロイヤルストレートフラッシュ
         // TODO ストレートフラッシュ
         // TODO フォーカード
         if (isFullhouse()) {
             return new Hand("フルハウス", 6000);
         }
 
-        if (isFlash()) {
+        if (isFlush()) {
             return new Hand("フラッシュ", 5000);
         }
 
@@ -52,7 +53,7 @@ public class Cards {
         return new Hand("ハイカード", 0);
     }
 
-    private boolean isFlash() {
+    private boolean isFlush() {
         // ストレートフラッシュとは区別つけていない
         return cards.stream()
                 .collect(groupingBy(Card::getSuit))

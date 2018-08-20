@@ -22,16 +22,16 @@ public class CardsTest {
             Cards onePair = new Cards(onePair());
             Cards twoPair = new Cards(twoPair());
             Cards threeCard = new Cards(threeCard());
-            Cards flash = new Cards(flash());
+            Cards flush = new Cards(flush());
             Cards fullHouse = new Cards(fullHouse());
 
             // TODO 勝者決めを Gameなどどこかに配置し直す
-            List<Cards> cards = asList(twoPair, highCard, flash, onePair, threeCard, fullHouse);
+            List<Cards> cards = asList(twoPair, highCard, flush, onePair, threeCard, fullHouse);
             List<Cards> strongOrder = cards.stream().sorted((c1, c2) -> {
                 return c2.getScore() - c1.getScore();
             }).collect(toList());
 
-            assertIterableEquals(asList(fullHouse, flash, threeCard, twoPair, onePair, highCard),
+            assertIterableEquals(asList(fullHouse, flush, threeCard, twoPair, onePair, highCard),
                     strongOrder);
         }
     }
@@ -51,8 +51,8 @@ public class CardsTest {
 
         @DisplayName("フラッシュ")
         @Test
-        void returnFlash() {
-            assertEquals("フラッシュ", new Cards(flash()).getHandName());
+        void returnFlush() {
+            assertEquals("フラッシュ", new Cards(flush()).getHandName());
         }
 
         // TODO ストレート
@@ -82,7 +82,7 @@ public class CardsTest {
         }
     }
 
-    Card[] flash() {
+    Card[] flush() {
         return new Card[]{
                 new Card("♠", "3"),
                 new Card("♠", "2"),
